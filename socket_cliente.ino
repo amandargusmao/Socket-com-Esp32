@@ -3,18 +3,18 @@
 const char* rede = "IFAL-Informatica";
 const char* senha = "somostodosifal";
 
-const uint16_t porta = 3000; 
-const char* servidor = "10.0.0.104"; 
+const int porta = 3000; 
+
+const char* servidor = "172.61.4.1"; 
 
 const int ledServidor = 2; 
 const int alarme = 23;
 const int ledGas = 32;
 const int sensor = 34; 
-const int vazamento = 1000;
-
-unsigned long int last_time = millis();
+const int vazamento = 930;
 
 void setup() {
+Serial.begin(9600);
 pinMode(ledServidor, OUTPUT); 
 pinMode(ledGas, OUTPUT);
 pinMode(alarme, OUTPUT);
@@ -27,7 +27,9 @@ delay(80);
 }
 
 void loop() {
-int leituraSensor = analogRead(sensor); 
+  
+int leituraSensor = analogRead(sensor);
+Serial.println(leituraSensor);
 
 if (leituraSensor >= (vazamento)){
   digitalWrite(alarme, HIGH);
@@ -46,10 +48,5 @@ return;
 digitalWrite(ledServidor, HIGH); 
 client.println(leituraSensor); 
 
-if (millis() - last_time >= 5000){
-  last_time = millis();
-}
-
-last_time = millis();
-delay(1500);
+delay(1300);
 }

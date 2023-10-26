@@ -3,26 +3,25 @@ from colorama import Fore, Back, Style, init
 
 init(autoreset=True)
 
-HOST = "172.61.3.150"
-PORT = 3000 
+servidor = "172.61.4.1"
+porta = 3000 
 tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-orig = (HOST, PORT)
-tcp.bind(orig)
+origem_conexao = (servidor, porta)
+tcp.bind(origem_conexao)
 tcp.listen(1)
 
 while True:
     con, client = tcp.accept() 
     print("\nIP e porta do cliente:", client) 
-    dados = con.recv(1024)
-    conversao = int(dados, 16)
-    dados_int = int(conversao / 256) * 100 
     
-    if dados_int > 1000:
+    dados_cliente = con.recv(1024)
+    dados_convertidos = int(dados_cliente) 
+        
+    if dados_convertidos >= 930:
         print (Fore.RED + "\nGás detectado!")
-        print (Fore.YELLOW + "\nConcentração de gás: " + Fore.RED + "{} ppm".format(int(dados_int / 100) * 10))
-        print (Fore.YELLOW + "Leitura do sensor: " + Fore.RED + "{}".format(dados_int))
+        print (Fore.YELLOW + "Leitura do sensor: " + Fore.RED + "{}".format(dados_convertidos))
     else:
         print (Fore.GREEN + "\nAmbiente seguro")
-        print (Fore.YELLOW + "Leitura do sensor: " + Fore.GREEN + "{}".format(dados_int))
+        print (Fore.YELLOW + "Leitura do sensor: " + Fore.GREEN + "{}".format(dados_convertidos))
                 
     print(" ")
